@@ -25,9 +25,9 @@ public class StateTest {
         assertDoesNotThrow(() -> state = new State(0, "state"));
 
         assertDoesNotThrow(
-            () -> contract1 = new Contract(1, "contract1", new Condition("true"), new Condition("true")));
+            () -> contract1 = new Contract(1, "contract1", new Condition("true"), new Condition("true"), ""));
         assertDoesNotThrow(
-            () -> contract2 = new Contract(2, "contract2", new Condition("false"), new Condition("false")));
+            () -> contract2 = new Contract(2, "contract2", new Condition("false"), new Condition("false"), ""));
     }
 
     @Test

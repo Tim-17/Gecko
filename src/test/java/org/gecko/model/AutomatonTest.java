@@ -35,7 +35,7 @@ public class AutomatonTest {
 
         try {
             condition = new Condition("true");
-            contract = new Contract(2, "contract", condition, condition);
+            contract = new Contract(2, "contract", condition, condition, "");
         } catch (ModelException e) {
             fail("Condition and contract for testing purposes of the automaton could not be initialized.");
         }

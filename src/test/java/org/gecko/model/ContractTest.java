@@ -27,7 +27,7 @@ public class ContractTest {
         }
 
         try {
-            contract = new Contract(0, "contract", preCondition, postCondition);
+            contract = new Contract(0, "contract", preCondition, postCondition, "");
         } catch (ModelException e) {
             fail("Contract could not be initialized.");
         }
@@ -58,7 +58,7 @@ public class ContractTest {
     void testNullParametersInContract() {
         Contract contract = null;
         try {
-            contract = new Contract(0, "contract", new Condition("true"), new Condition("true"));
+            contract = new Contract(0, "contract", new Condition("true"), new Condition("true"), "");
         } catch (ModelException e) {
             fail("Failed to create conditions for testing purposes of a contract's setters.");
         }

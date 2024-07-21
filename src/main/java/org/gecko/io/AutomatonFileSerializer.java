@@ -169,7 +169,11 @@ public class AutomatonFileSerializer implements FileSerializer {
     private Contract applyRegionsToContract(List<Region> relevantRegions, Contract contract) {
         Contract newContract;
         try {
-            newContract = new Contract(0, contract.getName(), contract.getPreCondition(), contract.getPostCondition());
+            newContract = new Contract(0,
+                    contract.getName(),
+                    contract.getPreCondition(),
+                    contract.getPostCondition(),
+                    contract.getModifies());
         } catch (ModelException e) {
             throw new RuntimeException("Failed to build contract out of other valid contracts", e);
         }

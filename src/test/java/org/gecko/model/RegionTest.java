@@ -27,10 +27,10 @@ public class RegionTest {
     @BeforeAll
     static void setUp() {
         assertDoesNotThrow(() -> condition = new Condition("true"));
-        assertDoesNotThrow(() -> preAndPostCondition = new Contract(0, "contract", condition, condition));
+        assertDoesNotThrow(() -> preAndPostCondition = new Contract(0, "contract", condition, condition, ""));
 
         assertDoesNotThrow(() -> regionWithValidConditions =
-            new Region(2, "region", condition, new Contract(3, "preAndPost", condition, condition)));
+            new Region(2, "region", condition, new Contract(3, "preAndPost", condition, condition, "")));
 
         assertDoesNotThrow(() -> state1 = new State(4, "state1"));
         assertDoesNotThrow(() -> state2 = new State(5, "state2"));
@@ -41,7 +41,7 @@ public class RegionTest {
         assertThrows(NullPointerException.class,
             () -> regionWithNullConditions = new Region(1, "region", condition, null));
         assertThrows(NullPointerException.class, () -> regionWithNullConditions =
-            new Region(1, "region", null, new Contract(3, "preAndPost", condition, condition)));
+            new Region(1, "region", null, new Contract(3, "preAndPost", condition, condition, "")));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class RegionTest {
         Region region = null;
         try {
             region = new Region(0, "region", new Condition("true"),
-                new Contract(1, "preAndPost", new Condition("true"), new Condition("true")));
+                new Contract(1, "preAndPost", new Condition("true"), new Condition("true"), ""));
         } catch (ModelException e) {
             fail("Failed to create region for testing purposes of a its setters.");
         }
@@ -135,7 +135,7 @@ public class RegionTest {
 
         try {
             region = new Region(0, "region", null,
-                new Contract(1, "contract", new Condition("true"), new Condition("true")));
+                new Contract(1, "contract", new Condition("true"), new Condition("true"), ""));
         } catch (NullPointerException e) {
             assertNull(region);
         } catch (ModelException e) {

@@ -23,7 +23,7 @@ public class EdgeTest {
             source = new State(0, "source");
             destination = new State(1, "destination");
             condition = new Condition("true");
-            contract = new Contract(2, "contract", condition, condition);
+            contract = new Contract(2, "contract", condition, condition, "");
         } catch (ModelException e) {
             fail("States or contract for testing purposes of the edge could not be initialized.");
         }
@@ -63,7 +63,7 @@ public class EdgeTest {
         Edge edge = null;
         try {
             edge = new Edge(0, new State(1, "source"), new State(2, "destination"),
-                new Contract(3, "contract", new Condition("true"), new Condition("true")), Kind.HIT, 0);
+                new Contract(3, "contract", new Condition("true"), new Condition("true"), ""), Kind.HIT, 0);
         } catch (ModelException e) {
             fail("Failed to create edge for testing purposes of its setters.");
         }

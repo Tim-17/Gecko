@@ -73,8 +73,8 @@ public class GeckoModelTest {
 
         try {
             Condition condition = new Condition("true");
-            Contract contract1 = new Contract(4, "contract1", condition, condition);
-            Contract contract2 = new Contract(5, "contract2", condition, condition);
+            Contract contract1 = new Contract(4, "contract1", condition, condition, "");
+            Contract contract2 = new Contract(5, "contract2", condition, condition, "");
 
             State state = new State(6, "state");
             state.addContract(contract2);
@@ -101,7 +101,7 @@ public class GeckoModelTest {
             model = new GeckoModel();
             system = new System(8, "system", null, new Automaton());
             region = new Region(9, "region", new Condition("true"),
-                new Contract(10, "contract10", new Condition("true"), new Condition("true")));
+                new Contract(10, "contract10", new Condition("true"), new Condition("true"), ""));
             system.getAutomaton().addRegion(region);
             model.getRoot().addChild(system);
         } catch (ModelException e) {

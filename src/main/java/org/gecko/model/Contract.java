@@ -20,16 +20,19 @@ public class Contract extends Element implements Renamable {
     private String name;
     private Condition preCondition;
     private Condition postCondition;
+    private String modifies;
 
     @JsonCreator
     public Contract(
         @JsonProperty("id") int id, @JsonProperty("name") String name,
-        @JsonProperty("preCondition") Condition preCondition, @JsonProperty("postCondition") Condition postCondition)
+        @JsonProperty("preCondition") Condition preCondition, @JsonProperty("postCondition") Condition postCondition,
+        @JsonProperty("modifies") String modifies)
         throws ModelException {
         super(id);
         setName(name);
         setPreCondition(preCondition);
         setPostCondition(postCondition);
+        setModifies(modifies);
     }
 
     @Override

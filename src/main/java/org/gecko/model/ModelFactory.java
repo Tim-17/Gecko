@@ -18,6 +18,7 @@ public class ModelFactory {
     private static final String DEFAULT_NAME = "Element_%d";
     private static final String DEFAULT_TYPE = "int";
     private static final String DEFAULT_CONDITION = Condition.trueCondition().getCondition();
+    private static final String DEFAULT_MODIFIES = "";
     private static final Kind DEFAULT_KIND = Kind.HIT;
     private static final int DEFAULT_PRIORITY = 0;
     private static final String DEFAULT_CODE = null;
@@ -38,7 +39,11 @@ public class ModelFactory {
 
     private Contract getDefaultContract() throws ModelException {
         int id = getNewElementId();
-        return new Contract(id, getDefaultName(id), new Condition(DEFAULT_CONDITION), new Condition(DEFAULT_CONDITION));
+        return new Contract(id,
+                getDefaultName(id),
+                new Condition(DEFAULT_CONDITION),
+                new Condition(DEFAULT_CONDITION),
+                DEFAULT_MODIFIES);
     }
 
     private int getNewElementId() {
@@ -246,9 +251,7 @@ public class ModelFactory {
     }
 
     public Contract createContract(@NonNull State state) throws ModelException {
-        int id = getNewElementId();
-        Contract contract =
-            new Contract(id, getDefaultName(id), new Condition(DEFAULT_CONDITION), new Condition(DEFAULT_CONDITION));
+        Contract contract = getDefaultContract();
         state.addContract(contract);
         return contract;
     }
@@ -256,8 +259,11 @@ public class ModelFactory {
     public Contract copyContract(@NonNull Contract contract) {
         int id = getNewElementId();
         try {
-            return new Contract(id, getDefaultName(id), new Condition(contract.getPreCondition().getCondition()),
-                new Condition(contract.getPostCondition().getCondition()));
+            return new Contract(id,
+                    getDefaultName(id),
+                    new Condition(contract.getPreCondition().getCondition()),
+                    new Condition(contract.getPostCondition().getCondition()),
+                    contract.getModifies());
         } catch (ModelException e) {
             throw new RuntimeException("Failed to create a copy of a contract", e);
         }
