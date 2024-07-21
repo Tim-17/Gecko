@@ -87,15 +87,18 @@ public class ViewModelElementCreator {
         }
 
         Automaton automaton = system.getAutomaton();
-        if (startStates.get(system.getId()) != null) {
-            State startState = automaton.getStateByName(startStates.get(system.getId()).getStartStateName());
-            if (automaton.getStates().isEmpty() || startState == null) {
-                foundNonexistentStartState = true;
-            } else {
-                try {
-                    automaton.setStartState(startState);
-                } catch (ModelException e) {
+        StartStateContainer startStateContainer = startStates.get(system.getId());
+        if (startStateContainer != null) {
+            for (String startStateName : startStateContainer.getStartStateNames()) {
+                State startState = automaton.getStateByName(startStateName);
+                if (automaton.getStates().isEmpty() || startState == null) {
                     foundNonexistentStartState = true;
+                } else {
+                    try {
+                        automaton.addStartState(startState);
+                    } catch (ModelException e) {
+                        foundNonexistentStartState = true;
+                    }
                 }
             }
         }

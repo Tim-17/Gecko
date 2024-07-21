@@ -232,9 +232,14 @@ public class ActionFactory {
         return new SelectToolAction(geckoViewModel.getCurrentEditor(), tool);
     }
 
-    public SetStartStateViewModelElementAction createSetStartStateViewModelElementAction(
+    public AddStartStateViewModelElementAction createAddStartStateViewModelElementAction(
         StateViewModel stateViewModel) {
-        return new SetStartStateViewModelElementAction(geckoViewModel, stateViewModel);
+        return new AddStartStateViewModelElementAction(geckoViewModel, stateViewModel);
+    }
+
+    public RemoveStartStateViewModelElementAction createRemoveStartStateViewModelElementAction(
+            StateViewModel stateViewModel) {
+        return new RemoveStartStateViewModelElementAction(geckoViewModel, stateViewModel);
     }
 
     public ViewSwitchAction createViewSwitchAction(SystemViewModel systemViewModel, boolean isAutomaton) {

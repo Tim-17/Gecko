@@ -119,8 +119,8 @@ public class ModelFactory {
             State copiedState = copyResult.getKey();
             originalToCopy.putAll(copyResult.getValue());
             copy.getAutomaton().addState(copiedState);
-            if (system.getAutomaton().getStartState().equals(state)) {
-                copy.getAutomaton().setStartState(copiedState);
+            if (system.getAutomaton().getStartStates().contains(state)) {
+                copy.getAutomaton().addStartState(copiedState);
             }
             originalToCopy.put(state, copiedState);
         }

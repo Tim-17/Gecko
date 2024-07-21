@@ -40,6 +40,6 @@ class DeleteStateViewModelElementActionTest {
         actionManager.run(deleteAction);
         assertEquals(0, rootSystemViewModel.getTarget().getAutomaton().getStates().size());
         StateViewModel newState = geckoViewModel.getViewModelFactory().createStateViewModelIn(rootSystemViewModel);
-        assertEquals(rootSystemViewModel.getTarget().getAutomaton().getStartState(), newState.getTarget());
+        assertEquals(Set.of(newState.getTarget()), rootSystemViewModel.getTarget().getAutomaton().getStartStates());
     }
 }

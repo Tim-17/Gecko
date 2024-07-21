@@ -166,18 +166,16 @@ public class AutomatonFileVisitor extends SystemDefBaseVisitor<Void> {
             .stream()
             .filter(state -> state.getName().matches(START_STATE_REGEX))
             .toList();
-        if (startStateCandidates.size() > 1) {
-            throw new RuntimeException("Multiple start states found in automaton %s".formatted(ctx.ident().getText()));
-        } else if (startStateCandidates.size() == 1) {
+        if (!startStateCandidates.isEmpty()) {
             try {
-                currentSystem.getAutomaton().setStartState(startStateCandidates.getFirst());
+                currentSystem.getAutomaton().addStartStates(Set.copyOf(startStateCandidates));
             } catch (ModelException e) {
                 throw new RuntimeException(e.getMessage());
             }
         } else {
             try {
                 //this should always work because if we have a transition, we have a state
-                currentSystem.getAutomaton().setStartState(currentSystem.getAutomaton().getStates().iterator().next());
+                currentSystem.getAutomaton().addStartState(currentSystem.getAutomaton().getStates().iterator().next());
             } catch (ModelException e) {
                 throw new RuntimeException(e.getMessage());
             }

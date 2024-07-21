@@ -48,8 +48,8 @@ public class AutomatonTest {
         }
         automatonWithStartState = new Automaton();
         automatonWithStartState.addState(startState);
-        assertDoesNotThrow(() -> automatonWithStartState.setStartState(startState));
-        assertNotNull(automatonWithStartState.getStartState());
+        assertDoesNotThrow(() -> automatonWithStartState.addStartState(startState));
+        assertEquals(Set.of(startState), automatonWithStartState.getStartStates());
 
         try {
             region1 = new Region(3, "region1", condition, contract);
@@ -68,7 +68,7 @@ public class AutomatonTest {
 
     @Test
     void testInitializedDefaultAutomaton() {
-        assertNull(defaultAutomaton.getStartState());
+        assertTrue(defaultAutomaton.getStartStates().isEmpty());
         assertNotNull(defaultAutomaton.getRegions());
         assertNotNull(defaultAutomaton.getStates());
         assertNotNull(defaultAutomaton.getEdges());
@@ -76,7 +76,7 @@ public class AutomatonTest {
 
     @Test
     void testInitializedAutomatonWithStartState() {
-        assertNotNull(automatonWithStartState.getStartState());
+        assertFalse(automatonWithStartState.getStartStates().isEmpty());
         assertNotNull(automatonWithStartState.getRegions());
         assertNotNull(automatonWithStartState.getStates());
         assertNotNull(automatonWithStartState.getEdges());
@@ -135,25 +135,25 @@ public class AutomatonTest {
 
     @Test
     void testManagingStartState() {
-        assertThrows(ModelException.class, () -> defaultAutomaton.setStartState(startState));
+        assertThrows(ModelException.class, () -> defaultAutomaton.addStartState(startState));
 
         defaultAutomaton.addState(startState);
-        assertDoesNotThrow(() -> defaultAutomaton.setStartState(startState));
-        assertNotNull(defaultAutomaton.getStartState());
+        assertDoesNotThrow(() -> defaultAutomaton.addStartState(startState));
+        assertFalse(defaultAutomaton.getStartStates().isEmpty());
 
         defaultAutomaton.addState(ordinaryState);
         assertThrows(ModelException.class, () -> defaultAutomaton.removeState(startState));
 
         assertDoesNotThrow(() -> defaultAutomaton.removeState(ordinaryState));
         assertDoesNotThrow(() -> defaultAutomaton.removeState(startState));
-        assertNull(defaultAutomaton.getStartState());
+        assertTrue(defaultAutomaton.getStartStates().isEmpty());
     }
 
     @Test
     void testManagingStates() {
         assertDoesNotThrow(() -> automatonWithStartState.removeState(startState));
         automatonWithStartState.addState(startState);
-        assertDoesNotThrow(() -> automatonWithStartState.setStartState(startState));
+        assertDoesNotThrow(() -> automatonWithStartState.addStartState(startState));
 
         assertTrue(defaultAutomaton.getStates().isEmpty());
 

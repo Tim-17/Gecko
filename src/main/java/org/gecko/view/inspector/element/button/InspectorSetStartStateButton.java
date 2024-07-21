@@ -2,6 +2,7 @@ package org.gecko.view.inspector.element.button;
 
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
+import org.gecko.actions.Action;
 import org.gecko.actions.ActionManager;
 import org.gecko.view.ResourceHandler;
 import org.gecko.view.inspector.element.InspectorElement;
@@ -24,14 +25,16 @@ public class InspectorSetStartStateButton extends ToggleButton implements Inspec
         });
 
         setOnAction(event -> {
-            actionManager.run(
-                actionManager.getActionFactory().createSetStartStateViewModelElementAction(stateViewModel));
+            Action action = isSelected() ?
+                    actionManager.getActionFactory().createRemoveStartStateViewModelElementAction(stateViewModel)
+                    : actionManager.getActionFactory().createAddStartStateViewModelElementAction(stateViewModel);
+            actionManager.run(action);
         });
     }
 
     private void update(boolean newValue) {
         setSelected(newValue);
-        setDisable(newValue);
+        // setDisable(newValue);
     }
 
     @Override

@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import javafx.geometry.Point2D;
 import javafx.util.Pair;
-import javax.sound.sampled.Port;
 import lombok.Getter;
 import org.gecko.exceptions.MissingViewModelElementException;
 import org.gecko.exceptions.ModelException;
@@ -21,7 +20,6 @@ import org.gecko.model.State;
 import org.gecko.model.System;
 import org.gecko.model.SystemConnection;
 import org.gecko.model.Variable;
-import org.gecko.view.views.viewelement.VariableBlockViewElement;
 import org.gecko.viewmodel.EdgeViewModel;
 import org.gecko.viewmodel.GeckoViewModel;
 import org.gecko.viewmodel.PortViewModel;
@@ -59,8 +57,8 @@ public class PastePositionableViewModelElementVisitor implements ElementVisitor 
         clipboardToPasted.putAll(copyResult.getValue());
         Automaton automaton = geckoViewModel.getCurrentEditor().getCurrentSystem().getTarget().getAutomaton();
         automaton.addState(stateToPaste);
-        if (automaton.getStartState() == null) {
-            automaton.setStartState(stateToPaste);
+        if (automaton.getStartStates().isEmpty()) {
+            automaton.addStartState(stateToPaste);
         }
         StateViewModel stateViewModel = geckoViewModel.getViewModelFactory().createStateViewModelFrom(stateToPaste);
         stateViewModel.setPosition(copyVisitor.getElementToPosAndSize().get(stateFromClipboard).getKey());

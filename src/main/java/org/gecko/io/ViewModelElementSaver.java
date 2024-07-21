@@ -2,6 +2,8 @@ package org.gecko.io;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import org.gecko.model.Automaton;
@@ -48,10 +50,14 @@ public class ViewModelElementSaver {
 
         Automaton automaton = system.getAutomaton();
 
-        if (automaton.getStartState() != null) {
+        if (!automaton.getStartStates().isEmpty()) {
             StartStateContainer startStateContainer = new StartStateContainer();
             startStateContainer.setSystemId(system.getId());
-            startStateContainer.setStartStateName(automaton.getStartState().getName());
+            List<String> startStateNames = automaton.getStartStates()
+                    .stream()
+                    .map(State::getName)
+                    .collect(Collectors.toList());
+            startStateContainer.setStartStateNames(startStateNames);
             startStates.add(startStateContainer);
         }
 

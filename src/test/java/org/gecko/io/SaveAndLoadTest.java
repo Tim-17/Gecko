@@ -42,11 +42,11 @@ public class SaveAndLoadTest {
         private static GeckoViewModel treeGeckoViewModel;
         private static ObjectMapper mapper;
         static String EMPTY_GECKO_JSON =
-            "{\"model\":{\"id\":0,\"name\":\"Element_0\",\"code\":null,\"automaton\":{\"startState\":null,\"regions\""
-                + ":[],\"states\":[],\"edges\":[]},\"children\":[],\"connections\":[],\"variables\":[]},\"startStates"
+            "{\"model\":{\"id\":0,\"name\":\"Element_0\",\"code\":null,\"automaton\":{\"regions\""
+                + ":[],\"states\":[],\"edges\":[],\"startStates\":[]},\"children\":[],\"connections\":[],\"variables\":[]},\"startStates"
                 + "\":[],\"viewModelProperties\":[]}";
         static String NON_NULL_AUTOMATON_JSON = "\"automaton\":{";
-        static String NON_NULL_START_STATE_JSON = "\"startState\":{";
+        static String NON_EMPTY_START_STATES_JSON = "\"startStates\":[{";
         static String NON_NULL_REGIONS_JSON = "\"regions\":[{";
         static String NON_NULL_REGION_STATES_JSON = "},\"states\":[{";
         static String NO_CHILDREN = "\"children\":[]";
@@ -181,7 +181,7 @@ public class SaveAndLoadTest {
             }
 
             assertTrue(oneLevel.toString().contains(NON_NULL_AUTOMATON_JSON) && oneLevel.toString()
-                .contains(NON_NULL_START_STATE_JSON) && oneLevel.toString().contains(NON_NULL_REGIONS_JSON)
+                .contains(NON_EMPTY_START_STATES_JSON) && oneLevel.toString().contains(NON_NULL_REGIONS_JSON)
                 && oneLevel.toString().contains(NON_NULL_REGION_STATES_JSON) && oneLevel.toString()
                 .contains(NO_CHILDREN));
 
@@ -200,7 +200,7 @@ public class SaveAndLoadTest {
             }
 
             assertTrue(
-                tree.toString().contains(NON_NULL_AUTOMATON_JSON) && tree.toString().contains(NON_NULL_START_STATE_JSON)
+                tree.toString().contains(NON_NULL_AUTOMATON_JSON) && tree.toString().contains(NON_EMPTY_START_STATES_JSON)
                     && tree.toString().contains(NON_NULL_REGIONS_JSON) && tree.toString()
                     .contains(NON_NULL_REGION_STATES_JSON) && tree.toString().contains(PRESENT_CHILDREN));
         }
@@ -310,8 +310,8 @@ public class SaveAndLoadTest {
 
         @Test
         void parseFileWithValidStartStates() {
-            File fileForNonexistentStartState = new File("src/test/java/org/gecko/io/files/existentStartState.json");
-            assertDoesNotThrow(() -> projectFileParser.parse(fileForNonexistentStartState));
+            File fileForExistentStartState = new File("src/test/java/org/gecko/io/files/existentStartState.json");
+            assertDoesNotThrow(() -> projectFileParser.parse(fileForExistentStartState));
         }
 
         @Test

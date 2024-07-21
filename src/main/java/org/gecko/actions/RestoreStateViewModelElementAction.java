@@ -33,7 +33,7 @@ public class RestoreStateViewModelElementAction extends Action {
         automaton.addState(stateViewModel.getTarget());
         geckoViewModel.addViewModelElement(stateViewModel);
         if (wasStartState) {
-            systemViewModel.setStartState(stateViewModel);
+            systemViewModel.addStartState(stateViewModel);
             systemViewModel.updateTarget();
         }
         return true;

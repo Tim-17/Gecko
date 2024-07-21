@@ -2,10 +2,11 @@ package org.gecko.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NonNull;
@@ -19,31 +20,37 @@ import org.gecko.exceptions.ModelException;
  */
 @Data
 @Setter(AccessLevel.NONE)
+@JsonPropertyOrder({"regions", "states", "edges", "startStates"})
 public class Automaton {
-    private State startState;
+    private final Set<State> startStates;
     private final Set<Region> regions;
     private final Set<State> states;
     private final Set<Edge> edges;
 
     @JsonCreator
     public Automaton() {
+        this.startStates = new HashSet<>();
         this.regions = new HashSet<>();
         this.states = new HashSet<>();
         this.edges = new HashSet<>();
     }
 
-    public Automaton(@JsonProperty("startState") State startState) {
-        this.regions = new HashSet<>();
-        this.states = new HashSet<>();
-        this.edges = new HashSet<>();
-        this.startState = startState;
+    public void setStartStates(Set<State> startStates) throws ModelException {
+        this.startStates.clear();
+        addStartStates(startStates);
     }
 
-    public void setStartState(State state) throws ModelException {
-        if (state != null && !states.contains(state)) {
-            throw new ModelException("State cannot be set as start-state.");
+    public void addStartState(State state) throws ModelException {
+        if (state == null || !states.contains(state)) {
+            throw new ModelException("State cannot be added as start state.");
         }
-        startState = state;
+        startStates.add(state);
+    }
+
+    public void addStartStates(Set<State> startStates) throws ModelException {
+        for (State startState : startStates) {
+            addStartState(startState);
+        }
     }
 
     @JsonIgnore
@@ -82,14 +89,10 @@ public class Automaton {
     }
 
     public void removeState(@NonNull State state) throws ModelException {
-        if (states.size() == 1 && states.contains(state)) {
-            setStartState(null);
-            states.remove(state);
-            return;
-        }
-        if (state.equals(startState) && states.size() > 1) {
+        if (startStates.contains(state) && startStates.size() == 1 && states.size() > 1) {
             throw new ModelException("Cannot remove the start state of an automaton.");
         }
+        startStates.remove(state);
         states.remove(state);
     }
 

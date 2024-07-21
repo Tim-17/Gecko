@@ -51,8 +51,8 @@ public class ViewModelFactory {
         StateViewModel result = new StateViewModel(getNewViewModelElementId(), state);
         geckoViewModel.addViewModelElement(result);
 
-        if (parentSystem.getStartState() == null) {
-            parentSystem.setStartState(result);
+        if (parentSystem.getStartStates().isEmpty()) {
+            parentSystem.addStartState(result);
             parentSystem.updateTarget();
         }
 
@@ -263,9 +263,9 @@ public class ViewModelFactory {
     private void updateStartState(State state) {
         System root = geckoViewModel.getGeckoModel().getRoot();
         System parentSystem = findSystemWithState(root, state);
-        if (parentSystem != null && state.equals(parentSystem.getAutomaton().getStartState())) {
+        if (parentSystem != null && parentSystem.getAutomaton().getStartStates().contains(state)) {
             SystemViewModel parentSystemViewModel = (SystemViewModel) geckoViewModel.getViewModelElement(parentSystem);
-            parentSystemViewModel.setStartState((StateViewModel) geckoViewModel.getViewModelElement(state));
+            parentSystemViewModel.addStartState((StateViewModel) geckoViewModel.getViewModelElement(state));
         }
     }
 

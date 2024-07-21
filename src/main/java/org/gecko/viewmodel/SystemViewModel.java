@@ -1,7 +1,9 @@
 package org.gecko.viewmodel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -13,6 +15,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.gecko.exceptions.ModelException;
+import org.gecko.model.State;
 import org.gecko.model.System;
 
 /**
@@ -25,7 +28,7 @@ import org.gecko.model.System;
 public class SystemViewModel extends BlockViewModelElement<System> {
     private final StringProperty codeProperty;
     private final ListProperty<PortViewModel> portsProperty;
-    private StateViewModel startState;
+    private final Set<StateViewModel> startStates;
 
     private static final Point2D DEFAULT_SYSTEM_SIZE = new Point2D(300, 300);
 
@@ -34,6 +37,7 @@ public class SystemViewModel extends BlockViewModelElement<System> {
         this.codeProperty = new SimpleStringProperty(target.getCode());
         this.portsProperty = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.sizeProperty.setValue(DEFAULT_SYSTEM_SIZE);
+        this.startStates = new HashSet<>();
     }
 
     public List<PortViewModel> getPorts() {
@@ -54,7 +58,11 @@ public class SystemViewModel extends BlockViewModelElement<System> {
         target.setCode(getCode());
         target.getVariables().clear();
         target.addVariables(portsProperty.stream().map(PortViewModel::getTarget).collect(Collectors.toSet()));
-        target.getAutomaton().setStartState(startState != null ? startState.getTarget() : null);
+        Set<State> startStates = this.startStates
+                .stream()
+                .map(StateViewModel::getTarget)
+                .collect(Collectors.toSet());
+        target.getAutomaton().setStartStates(startStates);
     }
 
     public void addPort(@NonNull PortViewModel port) {
@@ -68,18 +76,24 @@ public class SystemViewModel extends BlockViewModelElement<System> {
     }
 
     /**
-     * Sets the start state of the automaton of the system.
+     * Adds a start state to the automaton of the system.
      *
-     * @param newStartState the new start state
+     * @param startState the added start state
      */
-    public void setStartState(StateViewModel newStartState) {
-        if (newStartState != null) {
-            newStartState.setStartState(true);
+    public void addStartState(StateViewModel startState) {
+        if (startState == null) {
+            return;
         }
-        if (startState != null) {
-            startState.setStartState(false);
+        startState.setStartState(true);
+        this.startStates.add(startState);
+    }
+
+    public void removeStartState(StateViewModel startState) {
+        if (startState == null) {
+            return;
         }
-        startState = newStartState;
+        startState.setStartState(false);
+        this.startStates.remove(startState);
     }
 
     @Override
