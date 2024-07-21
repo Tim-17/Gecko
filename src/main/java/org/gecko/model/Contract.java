@@ -9,6 +9,9 @@ import lombok.Setter;
 import org.gecko.exceptions.MissingViewModelElementException;
 import org.gecko.exceptions.ModelException;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Represents a contract in the domain model of a Gecko project. A {@link Contract} has a name and is described by a
  * pre- and a post-{@link Condition}.
@@ -21,6 +24,7 @@ public class Contract extends Element implements Renamable {
     private Condition preCondition;
     private Condition postCondition;
     private String modifies;
+    private final Set<Variable> returnVariables;
 
     @JsonCreator
     public Contract(
@@ -33,6 +37,7 @@ public class Contract extends Element implements Renamable {
         setPreCondition(preCondition);
         setPostCondition(postCondition);
         setModifies(modifies);
+        returnVariables = new HashSet<>();
     }
 
     @Override
@@ -52,5 +57,24 @@ public class Contract extends Element implements Renamable {
     @Override
     public void accept(ElementVisitor visitor) throws ModelException, MissingViewModelElementException {
         visitor.visit(this);
+    }
+
+    public void addReturnVariable(Variable returnVariable) {
+        if (returnVariable.getVisibility() != Visibility.OUTPUT) {
+            return;
+        }
+        returnVariables.add(returnVariable);
+    }
+
+    public void addReturnVariables(Set<Variable> returnVariables) {
+        returnVariables.forEach(this::addReturnVariable);
+    }
+
+    public void removeReturnVariable(Variable returnVariable) {
+        returnVariables.remove(returnVariable);
+    }
+
+    public void removeReturnVariables(Set<Variable> returnVariables) {
+        returnVariables.forEach(this::removeReturnVariable);
     }
 }
