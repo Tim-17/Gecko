@@ -22,6 +22,7 @@ public class Region extends Element implements Renamable {
     private Condition invariant;
     private final Contract preAndPostCondition;
     private final Set<State> states;
+    private final Set<Contract> contracts;
 
     @JsonCreator
     public Region(
@@ -33,6 +34,7 @@ public class Region extends Element implements Renamable {
         this.states = new HashSet<>();
         this.invariant = invariant;
         this.preAndPostCondition = preAndPostCondition;
+        this.contracts = new HashSet<>();
     }
 
     @Override
@@ -46,6 +48,26 @@ public class Region extends Element implements Renamable {
     @Override
     public void accept(ElementVisitor visitor) throws ModelException, MissingViewModelElementException {
         visitor.visit(this);
+    }
+
+    public void addContract(@NonNull Contract contract) {
+        contracts.add(contract);
+    }
+
+    public void addContracts(@NonNull Set<Contract> contracts) {
+        for (Contract contract : contracts) {
+            addContract(contract);
+        }
+    }
+
+    public void removeContract(@NonNull Contract contract) {
+        contracts.remove(contract);
+    }
+
+    public void removeContracts(@NonNull Set<Contract> contracts) {
+        for (Contract contract : contracts) {
+            removeContract(contract);
+        }
     }
 
     public void addState(@NonNull State state) {
