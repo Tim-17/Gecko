@@ -12,6 +12,7 @@ import org.gecko.model.Automaton;
 import org.gecko.model.Contract;
 import org.gecko.model.Edge;
 import org.gecko.model.Element;
+import org.gecko.model.ElementVisitor;
 import org.gecko.model.Region;
 import org.gecko.model.State;
 import org.gecko.model.System;
@@ -185,7 +186,11 @@ public class ViewModelElementCreator {
         } catch (MissingViewModelElementException e) {
             StateViewModel source = (StateViewModel) viewModel.getViewModelElement(edge.getSource());
             if (source == null) {
-                viewModelFactory.createStateViewModelFrom(edge.getSource());
+                try {
+                    edge.getSource().accept(createModeletVisitor());
+                } catch (MissingViewModelElementException | ModelException exception) {
+                    throw new IOException(exception);
+                }
             }
             StateViewModel destination = (StateViewModel) viewModel.getViewModelElement(edge.getDestination());
             if (destination == null) {
@@ -249,5 +254,39 @@ public class ViewModelElementCreator {
         if (element.getId() > highestId) {
             highestId = element.getId();
         }
+    }
+
+    private ElementVisitor createModeletVisitor() {
+        return new ElementVisitor() {
+            @Override
+            public void visit(State state) {
+                viewModelFactory.createStateViewModelFrom(state);
+            }
+
+            @Override
+            public void visit(Contract contract) {
+            }
+
+            @Override
+            public void visit(SystemConnection systemConnection) {
+            }
+
+            @Override
+            public void visit(Variable variable) {
+            }
+
+            @Override
+            public void visit(System system) {
+            }
+
+            @Override
+            public void visit(Region region) throws MissingViewModelElementException {
+                viewModelFactory.createRegionViewModelFrom(region);
+            }
+
+            @Override
+            public void visit(Edge edge) {
+            }
+        };
     }
 }

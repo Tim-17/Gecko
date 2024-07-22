@@ -17,7 +17,7 @@ import org.gecko.exceptions.ModelException;
  */
 @Getter
 @Setter(onParam_ = {@NonNull})
-public class Region extends Element implements Renamable {
+public class Region extends Modelet implements Renamable {
     private String name;
     private Condition invariant;
     private final Contract preAndPostCondition;

@@ -14,7 +14,7 @@ import org.gecko.exceptions.ModelException;
  * Contains methods for managing the afferent data.
  */
 @Getter
-public class State extends Element implements Renamable {
+public class State extends Modelet implements Renamable {
 
     private String name;
     private final Set<Contract> contracts;

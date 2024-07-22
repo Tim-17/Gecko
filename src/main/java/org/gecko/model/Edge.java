@@ -21,15 +21,18 @@ public class Edge extends Element {
     private Kind kind;
     private int priority;
     @Setter(onParam_ = {@NonNull})
-    private State source;
+    private Modelet source;
     @Setter(onParam_ = {@NonNull})
     private State destination;
 
     @JsonCreator
     public Edge(
-        @JsonProperty("id") int id, @JsonProperty("source") State source,
-        @JsonProperty("destination") State destination, @JsonProperty("contract") Contract contract,
-        @JsonProperty("kind") Kind kind, @JsonProperty("priority") int priority) throws ModelException {
+        @JsonProperty("id") int id,
+        @JsonProperty("source") Modelet source,
+        @JsonProperty("destination") State destination,
+        @JsonProperty("contract") Contract contract,
+        @JsonProperty("kind") Kind kind,
+        @JsonProperty("priority") int priority) throws ModelException {
         super(id);
         setSource(source);
         setDestination(destination);
