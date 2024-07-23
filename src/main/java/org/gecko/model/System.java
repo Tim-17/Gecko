@@ -12,6 +12,8 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.gecko.exceptions.MissingViewModelElementException;
 import org.gecko.exceptions.ModelException;
+import org.gecko.model.types.EnumType;
+import org.gecko.model.types.StructType;
 
 /**
  * Represents a system in the domain model of a Gecko project. A {@link System} has a name, a parent-{@link System}, a
@@ -22,6 +24,8 @@ import org.gecko.exceptions.ModelException;
 @Getter
 @SuppressWarnings("JavaLangClash")
 public class System extends Element implements Renamable {
+    private final Set<EnumType> enumTypes;
+    private final Set<StructType> structTypes;
     private final Set<System> children;
     private final Set<SystemConnection> connections;
     private final Set<Variable> variables;
@@ -41,6 +45,8 @@ public class System extends Element implements Renamable {
         setName(name);
         setCode(code);
         setAutomaton(automaton);
+        this.enumTypes = new HashSet<>();
+        this.structTypes = new HashSet<>();
         this.children = new HashSet<>();
         this.connections = new HashSet<>();
         this.variables = new HashSet<>();
@@ -59,6 +65,38 @@ public class System extends Element implements Renamable {
             throw new ModelException("System's code is invalid.");
         }
         this.code = code;
+    }
+
+    public void addEnumType(@NonNull EnumType enumType) {
+        this.enumTypes.add(enumType);
+    }
+
+    public void addEnumTypes(@NonNull Set<EnumType> enumTypes) {
+        enumTypes.forEach(this::addEnumType);
+    }
+
+    public void removeEnumType(@NonNull EnumType enumType) {
+        this.enumTypes.remove(enumType);
+    }
+
+    public void removeEnumTypes(@NonNull Set<EnumType> enumTypes) {
+        enumTypes.forEach(this::removeEnumType);
+    }
+
+    public void addStructType(@NonNull StructType structType) {
+        this.structTypes.add(structType);
+    }
+
+    public void addStructTypes(@NonNull Set<StructType> structType) {
+        structType.forEach(this::addStructType);
+    }
+
+    public void removeStructType(@NonNull StructType structType) {
+        this.structTypes.remove(structType);
+    }
+
+    public void removeStructTypes(@NonNull Set<StructType> structType) {
+        structType.forEach(this::removeStructType);
     }
 
     public void addChild(@NonNull System child) {
