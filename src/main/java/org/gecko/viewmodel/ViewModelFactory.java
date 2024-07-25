@@ -87,7 +87,7 @@ public class ViewModelFactory {
      * Expects the source and destination of the edge to be in the view model.
      */
     public EdgeViewModel createEdgeViewModelFrom(Edge edge) throws MissingViewModelElementException {
-        StateViewModel source = (StateViewModel) geckoViewModel.getViewModelElement(edge.getSource());
+        ModeletViewModel source = (ModeletViewModel) geckoViewModel.getViewModelElement(edge.getSource());
         StateViewModel destination = (StateViewModel) geckoViewModel.getViewModelElement(edge.getDestination());
         if (source == null || destination == null) {
             throw new MissingViewModelElementException("Missing source or destination for edge.");

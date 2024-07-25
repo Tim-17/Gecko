@@ -64,6 +64,16 @@ public class DeleteActionsCreatorVisitor
 
     @Override
     public Set<AbstractPositionableViewModelElementAction> visit(RegionViewModel regionViewModel) {
+        Set<Edge> edges = parentSystemViewModel.getTarget()
+                .getAutomaton()
+                .getEdges()
+                .stream()
+                .filter(edge -> edge.getSource().equals(regionViewModel.getTarget()))
+                .collect(Collectors.toSet());
+        geckoViewModel.getViewModelElements(edges).forEach(edgeViewModel -> {
+            edgeViewModel.accept(this);
+        });
+
         deleteActions.add(new DeleteRegionViewModelElementAction(geckoViewModel, regionViewModel,
             parentSystemViewModel.getTarget().getAutomaton()));
 

@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -17,7 +15,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.gecko.exceptions.ModelException;
-import org.gecko.model.State;
+import org.gecko.model.*;
 
 /**
  * Represents an abstraction of a {@link State} model element. A {@link StateViewModel} is described by a set of
@@ -26,21 +24,17 @@ import org.gecko.model.State;
  */
 @Setter
 @Getter
-public class StateViewModel extends BlockViewModelElement<State> {
+public class StateViewModel extends ModeletViewModel {
     private static final int LOOPS = 4;
     private static final int ORIENTATIONS = 4;
     private final BooleanProperty isStartStateProperty;
-    private final ListProperty<ContractViewModel> contractsProperty;
 
     private final ObservableList<EdgeViewModel> incomingEdges;
-    private final ObservableList<EdgeViewModel> outgoingEdges;
 
     public StateViewModel(int id, @NonNull State target) {
         super(id, target);
         this.isStartStateProperty = new SimpleBooleanProperty();
-        this.contractsProperty = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.incomingEdges = FXCollections.observableArrayList();
-        this.outgoingEdges = FXCollections.observableArrayList();
         addEdgeListeners();
     }
 
@@ -53,22 +47,15 @@ public class StateViewModel extends BlockViewModelElement<State> {
     }
 
     @Override
+    public State getTarget() {
+        return (State) super.getTarget();
+    }
+
+    @Override
     public void updateTarget() throws ModelException {
         super.updateTarget();
-        target.getContracts().clear();
-        target.addContracts(contractsProperty.stream().map(ContractViewModel::getTarget).collect(Collectors.toSet()));
-    }
-
-    public void addContract(@NonNull ContractViewModel contract) {
-        contractsProperty.add(contract);
-    }
-
-    public void removeContract(@NonNull ContractViewModel contract) {
-        contractsProperty.remove(contract);
-    }
-
-    public List<ContractViewModel> getContracts() {
-        return new ArrayList<>(contractsProperty);
+        getTarget().getContracts().clear();
+        getTarget().addContracts(getContractsProperty().stream().map(ContractViewModel::getTarget).collect(Collectors.toSet()));
     }
 
     @Override
@@ -93,6 +80,7 @@ public class StateViewModel extends BlockViewModelElement<State> {
         getIncomingEdges().forEach(edge -> edge.getSource().setEdgeOffsets());
     }
 
+    @Override
     public void setEdgeOffsets() {
         Map<Integer, List<EdgeViewModel>> intersectionOrientationEdges = getIntersectionOrientationEdges();
         sortEdges(intersectionOrientationEdges);

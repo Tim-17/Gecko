@@ -7,17 +7,7 @@ import org.gecko.model.Kind;
 import org.gecko.model.Visibility;
 import org.gecko.tools.ToolType;
 import org.gecko.view.views.viewelement.decorator.ElementScalerBlock;
-import org.gecko.viewmodel.BlockViewModelElement;
-import org.gecko.viewmodel.ContractViewModel;
-import org.gecko.viewmodel.EdgeViewModel;
-import org.gecko.viewmodel.GeckoViewModel;
-import org.gecko.viewmodel.PortViewModel;
-import org.gecko.viewmodel.PositionableViewModelElement;
-import org.gecko.viewmodel.RegionViewModel;
-import org.gecko.viewmodel.Renamable;
-import org.gecko.viewmodel.StateViewModel;
-import org.gecko.viewmodel.SystemConnectionViewModel;
-import org.gecko.viewmodel.SystemViewModel;
+import org.gecko.viewmodel.*;
 
 /**
  * Represents a factory for actions. Provides a method for the creation of each subtype of {@link Action}.
@@ -153,9 +143,9 @@ public class ActionFactory {
     }
 
     public MoveEdgeViewModelElementAction createMoveEdgeViewModelElementAction(
-        EdgeViewModel edgeViewModel, ElementScalerBlock elementScalerBlock, StateViewModel stateViewModel,
+        EdgeViewModel edgeViewModel, ElementScalerBlock elementScalerBlock, ModeletViewModel modeletViewModel,
         ContractViewModel contractViewModel) {
-        return new MoveEdgeViewModelElementAction(geckoViewModel, edgeViewModel, elementScalerBlock, stateViewModel,
+        return new MoveEdgeViewModelElementAction(geckoViewModel, edgeViewModel, elementScalerBlock, modeletViewModel,
             contractViewModel);
     }
 

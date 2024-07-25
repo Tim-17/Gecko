@@ -286,8 +286,7 @@ public class SaveAndLoadTest {
             */
             // replacement test (check originalSystem== serializedParsedSystem)
             // not assertEquals because that's somewhat bugged
-            // this isn't that much better than the previous test (especially because System doesn't even seem to
-            // implement its own equals method)
+            // this isn't that much better than the previous test (this just checks if the root systems have the same id)
             assertTrue(ProjectFileSerializerTest.oneLevelGeckoViewModel.getGeckoModel().getRoot().equals(parsedOneLevelGeckoViewModel.getGeckoModel().getRoot()));
         }
 
@@ -326,8 +325,7 @@ public class SaveAndLoadTest {
             */
             // replacement test (check originalSystem == serializedParsedSystem)
             // not assertEquals because that's somewhat bugged
-            // this isn't that much better than the previous test (especially because System doesn't even seem to
-            // implement its own equals method)
+            // this isn't that much better than the previous test (this just checks if the root systems have the same id)
             assertTrue(ProjectFileSerializerTest.treeGeckoViewModel.getGeckoModel().getRoot().equals(parsedTreeGeckoViewModel.getGeckoModel().getRoot()));
         }
 

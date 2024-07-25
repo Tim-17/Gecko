@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.gecko.exceptions.MissingViewModelElementException;
 import org.gecko.exceptions.ModelException;
+import org.gecko.viewmodel.ViewModelFactory;
 
 /**
  * Represents a region in the domain model of a Gecko project. A {@link Region} has a name and is described by a set of
@@ -88,5 +89,10 @@ public class Region extends Modelet implements Renamable {
         for (State state : states) {
             removeState(state);
         }
+    }
+
+    @Override
+    public void createModeletViewModel(ViewModelFactory viewModelFactory) throws MissingViewModelElementException {
+        viewModelFactory.createRegionViewModelFrom(this);
     }
 }

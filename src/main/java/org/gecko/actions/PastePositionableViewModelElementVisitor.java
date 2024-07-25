@@ -10,16 +10,8 @@ import javafx.util.Pair;
 import lombok.Getter;
 import org.gecko.exceptions.MissingViewModelElementException;
 import org.gecko.exceptions.ModelException;
-import org.gecko.model.Automaton;
-import org.gecko.model.Contract;
-import org.gecko.model.Edge;
-import org.gecko.model.Element;
-import org.gecko.model.ElementVisitor;
-import org.gecko.model.Region;
-import org.gecko.model.State;
+import org.gecko.model.*;
 import org.gecko.model.System;
-import org.gecko.model.SystemConnection;
-import org.gecko.model.Variable;
 import org.gecko.viewmodel.EdgeViewModel;
 import org.gecko.viewmodel.GeckoViewModel;
 import org.gecko.viewmodel.PortViewModel;
@@ -145,7 +137,7 @@ public class PastePositionableViewModelElementVisitor implements ElementVisitor 
     @Override
     public void visit(Edge edge) throws ModelException, MissingViewModelElementException {
         Edge copy = geckoViewModel.getGeckoModel().getModelFactory().copyEdge(edge);
-        State pastedSource = (State) clipboardToPasted.get(edge.getSource());
+        Modelet pastedSource = (Modelet) clipboardToPasted.get(edge.getSource());
         State pastedDestination = (State) clipboardToPasted.get(edge.getDestination());
         Contract pastedContract = (Contract) clipboardToPasted.get(edge.getContract());
         if (pastedSource == null || pastedDestination == null) {

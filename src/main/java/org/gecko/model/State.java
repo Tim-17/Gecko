@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.gecko.exceptions.MissingViewModelElementException;
 import org.gecko.exceptions.ModelException;
+import org.gecko.viewmodel.ViewModelFactory;
 
 /**
  * Represents a state in the domain model of a Gecko project. A {@link State} has a name and a set of {@link Contract}s.
@@ -52,6 +53,11 @@ public class State extends Modelet implements Renamable {
         for (Contract contract : contracts) {
             removeContract(contract);
         }
+    }
+
+    @Override
+    public void createModeletViewModel(ViewModelFactory viewModelFactory) {
+        viewModelFactory.createStateViewModelFrom(this);
     }
 
     @Override

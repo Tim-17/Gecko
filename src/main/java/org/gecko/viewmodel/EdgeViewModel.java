@@ -29,7 +29,7 @@ public class EdgeViewModel extends PositionableViewModelElement<Edge> {
     private final Property<Kind> kindProperty;
     private final IntegerProperty priorityProperty;
     private final Property<ContractViewModel> contractProperty;
-    private final Property<StateViewModel> sourceProperty;
+    private final Property<ModeletViewModel> sourceProperty;
     private final Property<StateViewModel> destinationProperty;
     private final BooleanProperty isLoopProperty;
     private final IntegerProperty orientationProperty;
@@ -43,7 +43,7 @@ public class EdgeViewModel extends PositionableViewModelElement<Edge> {
     private final Property<Point2D> endOffsetProperty;
 
     public EdgeViewModel(
-        int id, @NonNull Edge target, @NonNull StateViewModel source, @NonNull StateViewModel destination) {
+        int id, @NonNull Edge target, @NonNull ModeletViewModel source, @NonNull StateViewModel destination) {
         super(id, target);
         this.kindProperty = new SimpleObjectProperty<>(target.getKind());
         this.priorityProperty = new SimpleIntegerProperty(target.getPriority());
@@ -112,7 +112,7 @@ public class EdgeViewModel extends PositionableViewModelElement<Edge> {
         return contractProperty.getValue();
     }
 
-    public void setSource(@NonNull StateViewModel source) {
+    public void setSource(@NonNull ModeletViewModel source) {
         getSource().getOutgoingEdges().remove(this);
         removeBindings();
         sourceProperty.setValue(source);
@@ -120,7 +120,7 @@ public class EdgeViewModel extends PositionableViewModelElement<Edge> {
         source.getOutgoingEdges().add(this);
     }
 
-    public StateViewModel getSource() {
+    public ModeletViewModel getSource() {
         return sourceProperty.getValue();
     }
 

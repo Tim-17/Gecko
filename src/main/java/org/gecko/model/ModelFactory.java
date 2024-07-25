@@ -74,10 +74,10 @@ public class ModelFactory {
         return new Pair<>(copy, contractToCopy);
     }
 
-    public Edge createEdge(@NonNull Automaton automaton, @NonNull State source, @NonNull State destination)
+    public Edge createEdge(@NonNull Automaton automaton, @NonNull Modelet source, @NonNull State destination)
         throws ModelException {
-        if (automaton.getStates().isEmpty() || !automaton.getStates().contains(source) || !automaton.getStates()
-            .contains(destination)) {
+        if (automaton.getStates().isEmpty() || !(automaton.getStates().contains(source) || automaton.getRegions().contains(source))
+                || !automaton.getStates().contains(destination)) {
             throw new RuntimeException("Failed to create edge, because source and / or destination states "
                 + "are not part of the automaton.");
         }
@@ -130,7 +130,7 @@ public class ModelFactory {
             originalToCopy.put(state, copiedState);
         }
         for (Edge edge : system.getAutomaton().getEdges()) {
-            State copiedSource = (State) originalToCopy.get(edge.getSource());
+            Modelet copiedSource = (Modelet) originalToCopy.get(edge.getSource());
             State copiedDestination = (State) originalToCopy.get(edge.getDestination());
             Edge copiedEdge = createEdge(copy.getAutomaton(), copiedSource, copiedDestination);
             copiedEdge.setContract((Contract) originalToCopy.get(edge.getContract()));

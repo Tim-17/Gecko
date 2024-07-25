@@ -24,7 +24,7 @@ import org.gecko.model.Region;
  */
 @Setter
 @Getter
-public class RegionViewModel extends BlockViewModelElement<Region> {
+public class RegionViewModel extends ModeletViewModel {
     private final Property<Color> colorProperty;
     private final StringProperty invariantProperty;
     private final ObservableList<StateViewModel> statesProperty;
@@ -47,13 +47,23 @@ public class RegionViewModel extends BlockViewModelElement<Region> {
     }
 
     @Override
+    public Region getTarget() {
+        return (Region) super.getTarget();
+    }
+
+    @Override
     public void updateTarget() throws ModelException {
         super.updateTarget();
-        target.getInvariant().setCondition(invariantProperty.getValue());
-        target.getPreAndPostCondition().getPreCondition().setCondition(contract.getPrecondition());
-        target.getPreAndPostCondition().getPostCondition().setCondition(contract.getPostcondition());
-        target.getStates().clear();
-        target.addStates(statesProperty.stream().map(StateViewModel::getTarget).collect(Collectors.toSet()));
+        getTarget().getInvariant().setCondition(invariantProperty.getValue());
+        getTarget().getPreAndPostCondition().getPreCondition().setCondition(contract.getPrecondition());
+        getTarget().getPreAndPostCondition().getPostCondition().setCondition(contract.getPostcondition());
+        getTarget().getStates().clear();
+        getTarget().addStates(statesProperty.stream().map(StateViewModel::getTarget).collect(Collectors.toSet()));
+    }
+
+    @Override
+    public void setEdgeOffsets() {
+        // TODO (if at all)
     }
 
     public void addState(@NonNull StateViewModel state) {
