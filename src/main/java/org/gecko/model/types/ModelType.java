@@ -2,7 +2,14 @@ package org.gecko.model.types;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Setter;
 
+@EqualsAndHashCode(callSuper = false)
+@Data
+@Setter(AccessLevel.NONE)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "type")
